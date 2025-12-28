@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2025.
+ * Last Modified :12/28/25, 8:36 AM.
+ * Frank Dex Devs.
+ * All rights Reserved to Lucas Francis K.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-lexend: "Lexend", sans-serif;
+}
+
+@layer components {
+  .router-link-exact-active {
+    @apply bg-pink-500 text-white py-2 px-4 rounded-sm;
+  }
+}
+
+.modal-enter-from {
+  @apply opacity-0 scale-125;
+}
+.modal-enter-to {
+  @apply opacity-100 scale-100;
+}
+.modal-enter-active {
+  @apply transition-all duration-300;
+}
+.modal-leave-from {
+  @apply opacity-100 scale-100;
+}
+.modal-leave-to {
+  @apply opacity-0 scale-125;
+}
+.modal-leave-active {
+  @apply transition-all duration-200;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 300ms, transform 500ms;
+}
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-30%);
+}
