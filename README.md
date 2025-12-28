@@ -1,73 +1,62 @@
-# frankdexdevs-ecommerce-vuejs
+# Frank Dex Devs eCommerce Project (Vue 3 + TypeScript)
 
-This template should help get you started developing with Vue 3 in Vite.
+Simple e‑commerce demo built with Vue 3 Composition API, TypeScript, Pinia, Axios and Tailwind CSS.
 
-## Recommended IDE Setup
+Thanks to Laracasts, I came about learning Vue 3, but for the project, I went on to learn some more features, including:
+- Typescript Usage
+- RouterLink Usage
+- Redirects, etc.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+I was able to learn much more, since Laracasts was quite limited on the content, but that's crucially enough to get you up and running. This project will sure show you how to get quick into the framework and hopefully make you enjoy.
 
-## Recommended Browser Setup
+> Rank this project to be used by other Vuewers...It's got too much dedication to get here 🤩
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Key points
+1. Framework: Vue 3 (Composition API) with TypeScript.
+2. Styling: Tailwind CSS.
+3. State: Pinia (example store at `src/stores/counter.ts`).
+4. Data: products fetched from `http://localhost:3001/products` (example uses Axios).
+5. Routing: Vue Router — category filter syncs with route query.
 
-## Type Support for `.vue` Imports in TS
+## Features
+1. Product listing with category filtering.
+2. Modal-based filter UI (component: `src/components/ModalView.vue`).
+3. Item rendering component: `src/components/products/ItemView.vue`.
+4. Add to cart capabilities using Pinia.
+5. TypeScript.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Project structure (important files)
+1. `src/components/NavbarView.vue` — top navigation and counter display.
+2. `src/components/products/ItemView.vue` — product list renderer.
+3. `src/components/ModalView.vue` — generic modal used for filters.
+4. `src/stores/counter.ts` — sample Pinia store.
+5. `@/types/products` — product TypeScript type definitions.
 
-## Customize configuration
+## Quick start
+1. Prerequisites: Node.js and npm installed.
+2. Clone the repo:
+    - `git clone git@github.com:LUCASFRANKINC/frankdexdevs-ecommerce-vuejs.git`
+3. Install:
+    - `npm install`
+4. Run the local server using `npm run dev`, which runs the json server as shown below:
+    - `npx json-server db.json --port 3001`
+    - Ensure `products.json` contains a `products` collection or point the app to another API.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Notes & implementation details
+1. Products are loaded using Axios in a `getProducts` function. Errors are currently logged to the console.
+2. Categories are computed from products: `['all', ...new Set(products.map(...))]`.
+3. `categorySelected` syncs with the route query on mount and via a `watch` that calls `router.replace`. This may replace other query params if present.
+4. Modal open state is controlled by a `showModal` ref. Radio inputs bind to `categorySelected`.
 
-## Project Setup
+## Known improvement areas
+1. Handle API errors more robustly (return empty array on failure).
+2. Preserve additional route query params when updating category.
+3. Add unit tests & CI.
+4. Add an explicit LICENSE file if open sourcing.
 
-```sh
-npm install
-```
+## Contributing
+1. Open issues or PRs on the repository.
+2. Follow existing TypeScript + Vue patterns and Tailwind classes.
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+## License
+See repository for license information (not included in code headers).
