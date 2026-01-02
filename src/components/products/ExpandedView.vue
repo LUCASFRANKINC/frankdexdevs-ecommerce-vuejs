@@ -6,33 +6,18 @@
   -->
 
 <script setup lang="ts">
-import axios from 'axios'
-import { onBeforeMount, onMounted, ref, type Ref } from 'vue'
-import type Product from '@/types/products'
-import { useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 import RatingView from '@/components/products/RatingView.vue'
-import { useCounterStore } from '@/stores/counter.ts'
+import { useProducts } from '@/composables/useProducts.ts'
+import { useCartStore } from '@/stores/cart.ts'
 
-const product: Ref<Product[]> = ref([])
-const route = useRoute()
-const store = useCounterStore()
-
-async function getProduct(id: number) {
-  const res = await axios.get(`http://localhost:3001/products?id=${id}`)
-  return await res.data[0]
-}
-
-onBeforeMount(async () => {
-  product.value = await getProduct(parseInt(<string>route.params.id))
-})
-
-onMounted(() => {
-  console.log(product.value)
-})
+const { products } = useProducts()
+const store = useCartStore();
+onMounted(() => {})
 </script>
 
 <template>
-  <div class="bg-white mt-14">
+  <div class="min-h-screen bg-white mt-14">
     <div class="pt-6">
       <nav aria-label="Breadcrumb">
         <ol
@@ -59,9 +44,9 @@ onMounted(() => {
           <li>
             <div class="flex items-center">
               <router-link
-                :to="`/products?category=${product.category}`"
+                :to="`/products?category=${products.category}`"
                 class="mr-2 text-sm font-medium text-gray-900 capitalize"
-                >{{ product.category }}</router-link
+                >{{ products.category }}</router-link
               >
               <svg
                 viewBox="0 0 16 20"
@@ -77,12 +62,9 @@ onMounted(() => {
           </li>
 
           <li class="text-sm">
-            <router-link
-              :to="`/products/${product.id}`"
-              class="font-medium"
-              aria-current="page"
-              >{{ product.title }}</router-link
-            >
+            <router-link :to="`/products/${products.id}`" class="font-medium" aria-current="page">{{
+              products.title
+            }}</router-link>
           </li>
         </ol>
       </nav>
@@ -90,8 +72,8 @@ onMounted(() => {
       <!-- Image gallery -->
       <div class="mx-auto mt-6 max-w-md sm:px-6 lg:px-8">
         <img
-          :src="product.image"
-          :alt="product.title"
+          :src="products.image"
+          :alt="products.title"
           class="size-full object-cover sm:rounded-lg"
         />
       </div>
@@ -103,7 +85,7 @@ onMounted(() => {
         <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           <h1
             class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
-            v-text="product.title"
+            v-text="products.title"
           ></h1>
         </div>
 
@@ -112,7 +94,7 @@ onMounted(() => {
           <h2 class="sr-only">Product information</h2>
           <p
             class="text-3xl tracking-tight text-gray-900 before:mr-0.5 before:text-indigo-600 before:content-['$']"
-            v-text="product.price"
+            v-text="products.price"
           ></p>
 
           <!-- Reviews -->
@@ -120,20 +102,21 @@ onMounted(() => {
             <h3 class="sr-only">Reviews</h3>
             <div class="flex items-center">
               <div class="flex items-center" v-for="star in 5" :key="star">
-                <RatingView :filled="star <= Math.ceil(product?.rating?.rate)" />
+                <RatingView :filled="star <= Math.ceil(products?.rating?.rate)" />
               </div>
-              <p class="sr-only">{{ product?.rating?.rate }} out of 5 stars</p>
+              <p class="sr-only">{{ products?.rating?.rate }} out of 5 stars</p>
               <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >{{ parseInt(product?.rating?.count) }} reviews</a
+                >{{ parseInt(products?.rating?.count) }} reviews</a
               >
             </div>
           </div>
 
           <form class="mt-10">
             <button
-              @click="store.increment()"
+              @click.once="store.addObject(products.id)"
+              :disabled="store.cartObjects.has(products.id)"
               type="button"
-              class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+              class="disabled:cursor-not-allowed disabled:bg-gray-100 mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
             >
               Add to Cart
             </button>
@@ -148,8 +131,7 @@ onMounted(() => {
             <h3 class="sr-only">Description</h3>
 
             <div class="space-y-6">
-              <p class="text-base text-gray-900" v-text="product.description">
-              </p>
+              <p class="text-base text-gray-900" v-text="products.description"></p>
             </div>
           </div>
 
@@ -178,8 +160,7 @@ onMounted(() => {
             <h2 class="text-sm font-medium text-gray-900">Details</h2>
 
             <div class="mt-4 space-y-6">
-              <p class="text-sm text-gray-600" v-text="product.description">
-              </p>
+              <p class="text-sm text-gray-600" v-text="products.description"></p>
             </div>
           </div>
         </div>

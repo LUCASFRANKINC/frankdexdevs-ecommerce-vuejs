@@ -9,12 +9,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
 import IndexView from '@/components/products/IndexView.vue'
 import ExpandedView from '@/components/products/ExpandedView.vue'
+import CartView from '@/components/products/CartView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/home",
+      path: "/",
       component: HomePage,
       name: 'home',
       meta: {
@@ -41,6 +42,15 @@ const router = createRouter({
       meta: {
         description: "Product View",
         title: "Product"
+      }
+    },
+    {
+      path: '/cart',
+      component: CartView,
+      name: 'cart',
+      meta: {
+        description: "Cart View for your products",
+        title: 'Cart Page'
       }
     }
   ],

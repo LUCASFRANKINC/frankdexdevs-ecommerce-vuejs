@@ -16,5 +16,7 @@ export default interface Product {
   title: string
   category: string
   price: number
-  description: string
+  description: string,
+  count: number,
+  total: number,
 }

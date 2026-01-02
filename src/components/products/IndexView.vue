@@ -14,70 +14,20 @@
  * - `Product`: Type definition for products.
  * - `useRoute`, `useRouter`: Vue Router utilities for route management.
  */
-import { computed, onBeforeMount, type Ref, ref, watch } from 'vue'
-import axios from 'axios'
+import { ref } from 'vue'
 import ItemView from '@/components/products/ItemView.vue'
 import ModalView from '@/components/ModalView.vue'
-import type Product from '@/types/products'
-import { useRoute, useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart.ts'
-
-/** Reactive reference to store the list of products. */
-const products: Ref<Product[]> = ref([])
+import { useProducts } from '@/composables/useProducts.ts'
+import ButtonDefault from '@/components/ButtonDefault.vue'
 
 /** Reactive reference to control the visibility of the modal. */
 const showModal = ref(false)
 
-/** Reactive reference to store the currently selected category. */
-const categorySelected = ref('all')
-
-/** Provides access to the current route. */
-const route = useRoute()
-
-/** Provides navigation capabilities. */
-const router = useRouter()
-
 /** access cart store */
-const store = useCartStore();
+const store = useCartStore()
 
-/**
- * Fetches products and initializes the selected category based on the route query.
- * Runs before the component is mounted.
- */
-onBeforeMount(async () => {
-  products.value = await getProducts()
-  categorySelected.value = <string>route.query.category ?? 'all'
-})
-
-/**
- * Watches for changes in the selected category and updates the route query accordingly.
- * @param nQ - New category value.
- * @param oQ - Old category value.
- */
-watch(categorySelected, (nQ, oQ) => (nQ !== oQ ? router.replace(`/products?category=${nQ}`) : ''))
-
-/**
- * Fetches the list of products from the API.
- * @returns {Promise<Product[]>} The list of products.
- */
-async function getProducts() {
-  try {
-    const res = await axios.get('http://localhost:3001/products')
-    return await res.data
-  } catch (e: unknown) {
-    console.error((e as Error).message)
-  }
-}
-
-/** Computed property to generate a list of unique categories from the products. */
-const categories = computed(() => ['all', ...new Set(products.value.map((item) => item.category))])
-
-/** Computed property to filter products based on the selected category. */
-const filteredProducts = computed(() =>
-  categorySelected.value === 'all'
-    ? products.value
-    : products.value.filter((product) => product.category === categorySelected.value),
-)
+const { categories, categorySelected, filteredProducts } = useProducts()
 </script>
 
 <template>
@@ -216,8 +166,8 @@ const filteredProducts = computed(() =>
           </button>
         </div>
       </div>
-      <div>
-        Cart Count: {{ store.cartObjects }}
+      <div v-if="store.cartObjects.size" class="mb-4 max-w-xs">
+        <ButtonDefault type="info" link="/cart" text="Go to cart" class="w-[60] right-2 bottom-2 fixed ring-2" />
       </div>
       <!-- Product list -->
       <ItemView :products="filteredProducts" />
@@ -252,5 +202,3 @@ const filteredProducts = computed(() =>
     </div>
   </section>
 </template>
-
-<style scoped></style>

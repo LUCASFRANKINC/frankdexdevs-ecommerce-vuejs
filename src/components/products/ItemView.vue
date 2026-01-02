@@ -138,8 +138,9 @@ const props = defineProps<{
 
           <button
             type="button"
-            @click="store.addObject(data.id, 5)"
-            class="inline-flex items-center rounded-lg bg-gray-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300"
+            @click.once="store.addObject(data.id)"
+            :disabled="store.cartObjects.has(data.id)"
+            class="inline-flex items-center rounded-lg cursor-pointer bg-gray-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-pink-500 focus:outline-none focus:ring-4 focus:ring-primary-300 disabled:bg-gray-200 disabled:cursor-not-allowed"
           >
             <svg
               class="-ms-2 me-2 h-5 w-5"
