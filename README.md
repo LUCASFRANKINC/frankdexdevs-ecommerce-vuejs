@@ -3,9 +3,10 @@
 Simple e‑commerce demo built with Vue 3 Composition API, TypeScript, Pinia, Axios and Tailwind CSS.
 
 Thanks to Laracasts, I came about learning Vue 3, but for the project, I went on to learn some more features, including:
-- Typescript Usage
+- Typescript Usage for type safety
+- Creating types to use as interfaces for TS and mapping them to the project
 - RouterLink Usage
-- Redirects, etc.
+- using router.push, etc.
 
 I was able to learn much more, since Laracasts was quite limited on the content, but that's crucially enough to get you up and running. This project will sure show you how to get quick into the framework and hopefully make you enjoy.
 
@@ -14,7 +15,7 @@ I was able to learn much more, since Laracasts was quite limited on the content,
 ## Key points
 1. Framework: Vue 3 (Composition API) with TypeScript.
 2. Styling: Tailwind CSS.
-3. State: Pinia (example store at `src/stores/counter.ts`).
+3. State: Pinia (cart store at `src/stores/cart.ts`).
 4. Data: products fetched from `http://localhost:3001/products` (example uses Axios).
 5. Routing: Vue Router — category filter syncs with route query.
 
@@ -23,14 +24,19 @@ I was able to learn much more, since Laracasts was quite limited on the content,
 2. Modal-based filter UI (component: `src/components/ModalView.vue`).
 3. Item rendering component: `src/components/products/ItemView.vue`.
 4. Add to cart capabilities using Pinia.
-5. TypeScript.
+5. Cart items increment/decrement capabilities
+6. Decrement item to 0 clears it from cart map object
+7. Allow removing item from map object by clicking on the 'x' button
+8. Checkout cart clears all items and routes to products list
+9. Listing Product items with proper category backtrack on breadcrumbs
 
 ## Project structure (important files)
 1. `src/components/NavbarView.vue` — top navigation and counter display.
 2. `src/components/products/ItemView.vue` — product list renderer.
 3. `src/components/ModalView.vue` — generic modal used for filters.
-4. `src/stores/counter.ts` — sample Pinia store.
+4. `src/stores/cart.ts` — Cart Pinia store.
 5. `@/types/products` — product TypeScript type definitions.
+6. `src/components/products/CartView.vue` - cart items renderer
 
 ## Quick start
 1. Prerequisites: Node.js and npm installed.
